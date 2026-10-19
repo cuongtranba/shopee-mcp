@@ -97,7 +97,14 @@ async function createContext(headless: boolean): Promise<BrowserContext> {
  * `headless` overrides the env default (the login flow forces a visible window).
  */
 export async function getContext(headless: boolean = HEADLESS): Promise<BrowserContext> {
-  if (!contextPromise) contextPromise = createContext(headless);
+  if (!contextPromise) {
+    // Forget a failed launch (e.g. the profile is locked by another instance) so
+    // the next call retries instead of replaying the same error until a restart.
+    contextPromise = createContext(headless).catch((err: unknown) => {
+      contextPromise = null;
+      throw err;
+    });
+  }
   return contextPromise;
 }
 
