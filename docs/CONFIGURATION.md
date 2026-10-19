@@ -140,6 +140,22 @@ mcp_servers:
 
 Useful checks: `hermes mcp list` shows configured servers, and `hermes mcp test shopee` verifies the connection and tool discovery without starting a chat.
 
+## Kanna
+
+[Kanna](https://github.com/cuongtranba/kanna) registers MCP servers under **Settings → MCP servers → Add**:
+
+| Field     | Value                                                                       |
+| --------- | --------------------------------------------------------------------------- |
+| Name      | `shopee`                                                                    |
+| Transport | `stdio`                                                                     |
+| Command   | `xvfb-run`                                                                  |
+| Args      | `-a`, `node`, `/absolute/path/to/shopee-mcp/build/index.js` (three entries) |
+| Env       | `SHOPEE_DOMAIN` = `shopee.vn` (or another regional domain)                  |
+
+Keep `xvfb-run` even on a desktop. Kanna usually runs as a background service with no `DISPLAY`, including under WSLg, so a plain `node` command cannot open the headed browser. A virtual display also keeps browser windows from appearing while you work.
+
+Click **Test** after saving to confirm the tool list loads. Kanna attaches MCP servers when a chat starts, so open a **new chat** to use the tools.
+
 ## Other editors
 
 Cursor, Zed, Windsurf, and any other **stdio MCP host** use the same pattern: a server whose command is `node` (or `xvfb-run … node`) plus the path to `build/index.js`.

@@ -133,6 +133,8 @@ Claude Desktop / Claude Code `mcpServers` entry:
 
 On a machine with a real display, drop `xvfb-run`: `"command": "shopee-mcp"`, `"args": []`. From a source checkout, use `"command": "node"`, `"args": ["/absolute/path/to/shopee-mcp/build/index.js"]` (wrapped in `xvfb-run` on a headless box).
 
+Per-client setup (Claude Code, Claude Desktop, Hermes Agent, Kanna, other editors): see [docs/CONFIGURATION.md](./docs/CONFIGURATION.md#mcp-configuration-all-clients).
+
 ## Configuration
 
 All optional — see `.env.example`. Copy to `.env` to override.
@@ -165,13 +167,14 @@ More detail: **[docs/DEVELOPMENT.md](./docs/DEVELOPMENT.md)**.
 
 ## Troubleshooting
 
-| Symptom                                       | Likely cause / fix                                                                                                      |
-| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `🔒 Not signed in` / anonymous-request errors | No/expired session → run `npm run login`.                                                                               |
-| `error 90309999` or empty results             | Shopee's anti-bot gate rejected the request. Ensure you're logged in and running **headed** (or via `xvfb-run`); retry. |
-| A read returns empty for a valid product      | Shopee lazy-loads; retry, and run with `DEBUG=true` to inspect.                                                         |
-| Empty or stale results right after a change   | In-memory cache — lower `CACHE_TTL_MS` or wait for the TTL to expire.                                                   |
-| Headless / server has no display              | Wrap the command in `xvfb-run -a …`.                                                                                    |
+| Symptom                                                     | Likely cause / fix                                                                                                                                                                                                               |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `🔒 Not signed in` / anonymous-request errors               | No/expired session → run `npm run login`.                                                                                                                                                                                        |
+| `error 90309999` or empty results                           | Shopee's anti-bot gate rejected the request. Ensure you're logged in and running **headed** (or via `xvfb-run`); retry.                                                                                                          |
+| A read returns empty for a valid product                    | Shopee lazy-loads; retry, and run with `DEBUG=true` to inspect.                                                                                                                                                                  |
+| Empty or stale results right after a change                 | In-memory cache — lower `CACHE_TTL_MS` or wait for the TTL to expire.                                                                                                                                                            |
+| Headless / server has no display                            | Wrap the command in `xvfb-run -a …`.                                                                                                                                                                                             |
+| `profile is already in use by another instance of Chromium` | Only one process can open the saved profile at a time. Close the other one (another MCP client, a second chat's server, `npm run login`, or MCP Inspector), or give each client its own `SHOPEE_PROFILE_DIR` and log in to each. |
 
 ## Caveats
 
