@@ -12,7 +12,7 @@ All optional. Set them in your MCP client's **`env`** block, or copy `.env.examp
 
 | Variable               | Default                        | Description                                              |
 | ---------------------- | ------------------------------ | -------------------------------------------------------- |
-| `SHOPEE_DOMAIN`        | `shopee.co.id`                 | Regional Shopee domain.                                  |
+| `SHOPEE_DOMAIN`        | `shopee.vn`                    | Regional Shopee domain.                                  |
 | `SHOPEE_LOCALE`        | _derived from domain_          | Browser locale override.                                 |
 | `SHOPEE_TIMEZONE`      | _derived from domain_          | Browser timezone override.                               |
 | `SHOPEE_PROFILE_DIR`   | `~/.shopee-mcp/chrome-profile` | Where the saved login lives.                             |
@@ -31,7 +31,8 @@ Shopee tailors its web app to the visitor's region, so the browser's locale and 
 | `.my`         | `en-MY` | `Asia/Kuala_Lumpur` | `MYR`    |
 | `.sg`         | `en-SG` | `Asia/Singapore`    | `SGD`    |
 | `.tw`         | `zh-TW` | `Asia/Taipei`       | `TWD`    |
-| anything else | `id-ID` | `Asia/Jakarta`      | `IDR`    |
+| `.vn`         | `vi-VN` | `Asia/Ho_Chi_Minh`  | `VND`    |
+| anything else | `vi-VN` | `Asia/Ho_Chi_Minh`  | `VND`    |
 
 The currency is used to render prices when Shopee's response omits a per-item currency field, which the newer search card format does.
 
@@ -138,6 +139,22 @@ mcp_servers:
 **No timeout setting needed.** Hermes allows 300 seconds per tool call by default — comfortably above what this server needs (see [Tools and request timeouts](#tools-and-request-timeouts)). If you do want to pin it, the optional per-server `timeout` key is in **seconds**, not milliseconds: `timeout: 180` is three minutes.
 
 Useful checks: `hermes mcp list` shows configured servers, and `hermes mcp test shopee` verifies the connection and tool discovery without starting a chat.
+
+## Kanna
+
+[Kanna](https://github.com/cuongtranba/kanna) registers MCP servers under **Settings → MCP servers → Add**:
+
+| Field     | Value                                                                       |
+| --------- | --------------------------------------------------------------------------- |
+| Name      | `shopee`                                                                    |
+| Transport | `stdio`                                                                     |
+| Command   | `xvfb-run`                                                                  |
+| Args      | `-a`, `node`, `/absolute/path/to/shopee-mcp/build/index.js` (three entries) |
+| Env       | `SHOPEE_DOMAIN` = `shopee.vn` (or another regional domain)                  |
+
+Keep `xvfb-run` even on a desktop. Kanna usually runs as a background service with no `DISPLAY`, including under WSLg, so a plain `node` command cannot open the headed browser. A virtual display also keeps browser windows from appearing while you work.
+
+Click **Test** after saving to confirm the tool list loads. Kanna attaches MCP servers when a chat starts, so open a **new chat** to use the tools.
 
 ## Other editors
 

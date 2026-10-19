@@ -4,6 +4,7 @@
  *
  * Run with: npm run test:unit
  */
+import './region.js';
 import assert from 'node:assert/strict';
 import { flattenSearchItems } from '../src/tools/search.js';
 import { formatPrice } from '../src/utils/price.js';
@@ -290,6 +291,10 @@ test('formatPrice: renders TWD with NT$ and no decimals', () => {
   assert.equal(formatPrice(50000000, 'TWD'), 'NT$500');
 });
 
+test('formatPrice: renders VND with ₫ and no decimals', () => {
+  assert.equal(formatPrice(15000000000, 'VND'), '₫150.000');
+});
+
 test('formatPrice: falls back to "CURRENCY amount" for an unmapped currency', () => {
   assert.equal(formatPrice(500000000, 'USD'), 'USD 5.000');
 });
@@ -473,11 +478,19 @@ test('regionFor: .tw domains get Taiwanese locale/timezone/currency', () => {
   });
 });
 
-test('regionFor: an unmapped domain falls back to the Indonesian defaults', () => {
+test('regionFor: .vn domains get Vietnamese locale/timezone/currency', () => {
   assert.deepEqual(regionFor('shopee.vn'), {
-    locale: 'id-ID',
-    timezone: 'Asia/Jakarta',
-    currency: 'IDR',
+    locale: 'vi-VN',
+    timezone: 'Asia/Ho_Chi_Minh',
+    currency: 'VND',
+  });
+});
+
+test('regionFor: an unmapped domain falls back to the Vietnamese defaults', () => {
+  assert.deepEqual(regionFor('shopee.com.br'), {
+    locale: 'vi-VN',
+    timezone: 'Asia/Ho_Chi_Minh',
+    currency: 'VND',
   });
 });
 
