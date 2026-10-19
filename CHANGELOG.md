@@ -6,6 +6,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Ver
 
 ## [Unreleased]
 
+### Added
+
+- **Vietnam**: `shopee.vn` gets its own region — `vi-VN` locale, `Asia/Ho_Chi_Minh` timezone, and prices in VND (`₫150.000`).
+
+### Changed
+
+- **The default `SHOPEE_DOMAIN` is now `shopee.vn`**, and an unmapped domain falls back to the Vietnamese defaults. Set `SHOPEE_DOMAIN=shopee.co.id` to keep browsing Shopee Indonesia.
+
 ## [0.3.0] - 2026-09-29
 
 ### Added
