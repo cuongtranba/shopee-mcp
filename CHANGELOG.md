@@ -14,6 +14,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Ver
 
 - **The default `SHOPEE_DOMAIN` is now `shopee.vn`**, and an unmapped domain falls back to the Vietnamese defaults. Set `SHOPEE_DOMAIN=shopee.co.id` to keep browsing Shopee Indonesia.
 
+### Fixed
+
+- **A failed browser launch no longer sticks.** If the profile was locked by another instance, every later tool call repeated the same error until the server restarted; now the next call launches again.
+
 ## [0.3.0] - 2026-09-29
 
 ### Added
